@@ -1,13 +1,63 @@
 
  /*
- ** file: main.c
- ** target: PIC24FJ256GB110
- ** compiler: C30 version 3.11
- ** IDE: MPLAB 8.30
- **
- ** This works in the real hardware but the
- ** PWM does not work in the simulator.
+ *
  */
+#include <xc.h>
+
+#include "PWM.h"
+
+static void Set(pPwm_t This, PwmReg_t reg, unsigned int value)
+{
+    switch(reg)
+    {
+        case OCCON1:
+            *This->base = value;
+            break;
+        case OCCON2 :
+            *(This->base +1) = value;
+            break;
+        case OCRS :
+            *(This->base +2) = value;
+            break;
+        case OCR :
+            *(This->base +3) = value;
+            break;
+        case OCTMR :
+            *(This->base +4) = value;
+            break;
+    }
+}
+
+
+static unsigned int Get(pPwm_t This, PwmReg_t reg)
+{
+    unsigned int retValue = 0;
+    switch(reg)
+    {
+        case OCCON1:
+            retValue = *This->base;
+            break;
+        case OCCON2 :
+            retValue = *(This->base +1);
+            break;
+        case OCRS :
+            retValue = *(This->base +2);
+            break;
+        case OCR :
+            retValue = *(This->base +3);
+            break;
+        case OCTMR :
+            retValue = *(This->base +4);
+            break;
+    }
+    return retValue;
+}
+
+
+Pwm_t pwm1 = {&OC1CON1, &Set, &Get};
+Pwm_t pwm2 = {&OC2CON1, &Set, &Get};
+Pwm_t pwm3 = {&OC3CON1, &Set, &Get};
+Pwm_t pwm4 = {&OC4CON1, &Set, &Get};
 
 #if 0
   #define  PWM_PERIOD 62500
@@ -44,19 +94,6 @@
 
   }
 
-  int
-  main(
-      void
-      )
-  {
 
-      CLKDIV =  0; /* set for default clock operations Fcyc = 4MHz */
-      AD1PCFGL = 0xffff;
-      AD1PCFGH = 0x0003;
-
-      PwmInit();
-      for( ; ; );     /* hang here forever */
-      return 0;
-  }
 #endif
 

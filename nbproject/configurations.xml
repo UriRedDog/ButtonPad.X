@@ -9,6 +9,7 @@
       <itemPath>Switch.h</itemPath>
       <itemPath>Power.h</itemPath>
       <itemPath>PWM.h</itemPath>
+      <itemPath>Timer.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -23,6 +24,7 @@
       <itemPath>main.c</itemPath>
       <itemPath>Power.c</itemPath>
       <itemPath>PWM.c</itemPath>
+      <itemPath>Timer.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

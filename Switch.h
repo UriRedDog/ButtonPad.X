@@ -3,6 +3,8 @@
  * Author: dthedens
  *
  * Switches for the 4x4 pad have a row and a column.
+ * It is helpful to print the schematic and then rotate it 90 degrees.
+ * the rows are ;ab;ed SWT-GND[1-4], the columns are SWITCH[1-4]E
  * the column is a duplicated in the switch objects, but it is only a small amount of code.
  * The controller will activate a column and scan the rows
  * then move to the next column.  Since the switches might be bouncy, we
@@ -42,7 +44,6 @@ struct _SWITCH
     pPin_t row;
     pPin_t col;
     unsigned int * bounceCount;
-    SwitchState_t * state;
     S_Sample Sample;
     S_GetState GetState;
 };
@@ -67,9 +68,10 @@ extern Switch_t switchR2C4;
 extern Switch_t switchR3C4;
 extern Switch_t switchR4C4;
 
-extern pSwitch_t SwitchArray[];
+//extern pSwitch_t SwitchArray[];
 
-void InitSwitches(void);
+extern void InitSwitches(void);
+extern void SampleSwitches(void const * instance);
 
 #ifdef	__cplusplus
 }

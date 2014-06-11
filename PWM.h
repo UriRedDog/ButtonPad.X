@@ -22,7 +22,7 @@ typedef void (*P_Set)(pPwm_t This, PwmReg_t reg, unsigned int value);
 typedef unsigned int (*P_Get)(pPwm_t This, PwmReg_t reg);
 
 
-struct _PIN {
+struct _PWM {
   volatile unsigned int *base;
   P_Set Set;
   P_Get Get;

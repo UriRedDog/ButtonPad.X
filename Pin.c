@@ -6,7 +6,7 @@
 * The InitNewPIN is called to set TRIS and ADPCFG registers since
 * this cannot be accomplished in the compile time constructors.
 */
-#include "p24fxxxx.h"
+#include <xc.h>
 #include <stdlib.h>
 
 #include "Pin.h"
