@@ -16,6 +16,7 @@
 #include "Timer.h"
 
 #include "Power.h"
+#include "PWM.h"
 
 unsigned int Activity;
 
@@ -48,8 +49,24 @@ void InitPWMPins()
  * turning it on, causes current to flow.  We cannot use pin directly since
  * all 12 LED might be on and that amounts a lot of current.
  */
+#define PWM_PERIOD 62500
 void InitPWM()
 {
+    // turn all off
+    pwm1.Set(&pwm1, OCCON1, 0);
+    pwm1.Set(&pwm1, OCCON2, 0);
+    pwm2.Set(&pwm2, OCCON1, 0);
+    pwm2.Set(&pwm2, OCCON2, 0);
+    pwm3.Set(&pwm3, OCCON1, 0);
+    pwm3.Set(&pwm3, OCCON2, 0);
+    pwm4.Set(&pwm4, OCCON1, 0);
+    pwm4.Set(&pwm4, OCCON2, 0);
+
+
+    pwm1.Set(&pwm1, OCCON2, 0x1F);  // sync with this OC module
+    pwm1.Set(&pwm1, OCR, PWM_PERIOD >> 1);
+    pwm1.Set(&pwm1, OCRS, PWM_PERIOD - 1);
+    pwm1.Set(&pwm1, OCCON1, 0x1C08);  // Fcy source, trigger 1 mode 0
 
 }
 

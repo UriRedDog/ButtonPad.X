@@ -43,7 +43,7 @@ void InitSwitches()
 {
     unsigned int i;
     pSwitch_t ps = SwitchArray[0];
-    for (i=0; i < 164; i++)
+    for (i=0; i < 16; i++)
     {
         bounceArray[i] = 0;
         ps->row->SetMode(ps->row, PIN_INPUT_PULLUP);

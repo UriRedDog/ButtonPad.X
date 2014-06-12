@@ -16,8 +16,8 @@
 #include "BitOperations.h"
 
 CallBackList mListTimer1[2];
-CallBackList mListTimer2[2]; 
-CallBackList mListTimer3[2] = {{NULL,NULL},{NULL,NULL}};
+CallBackList mListTimer2[1]= {NULL,NULL};
+CallBackList mListTimer3[2];
 
 
 static bool Set(pTimer_t This, TimerSet_t timerset, unsigned int val) {
@@ -91,7 +91,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
 {
   CallBackList *list = mListTimer1;
 
-  while(list->CallBack != NULL)
+  while(list != NULL && list->CallBack != NULL)
   {
     list->CallBack(list->instance);
     if(list)list++;
@@ -103,7 +103,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T2Interrupt(void)
 {
   CallBackList *list = mListTimer2;
 
-  while(list->CallBack != NULL)
+  while(list != NULL && list->CallBack != NULL)
   {
     list->CallBack(list->instance);
     list++;
@@ -115,7 +115,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
 {
   CallBackList *list = mListTimer3;
 
-  while(list->CallBack != NULL)
+  while(list != NULL && list->CallBack != NULL)
   {
     list->CallBack(list->instance);
     list++;
@@ -148,7 +148,7 @@ CallBackList mListTimer1[2] = {
 {NULL,NULL}
 };
 
-CallBackList mListTimer2[2] = {
+CallBackList mListTimer3[2] = {
 {ShutDown,NULL},
 {NULL,NULL}
 };
