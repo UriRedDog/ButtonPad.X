@@ -10,6 +10,7 @@
       <itemPath>Power.h</itemPath>
       <itemPath>PWM.h</itemPath>
       <itemPath>Timer.h</itemPath>
+      <itemPath>BitOperations.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"

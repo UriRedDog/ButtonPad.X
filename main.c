@@ -42,6 +42,12 @@ void InitPWMPins()
     PPSOutput(PPS_RP19, PPS_OC4);
 }
 
+/*
+ * The goal is to have only one column of LED active at one time by providing
+ * a path to ground on the LED-GND[1-4] pins.  We place a FET in the path so that
+ * turning it on, causes current to flow.  We cannot use pin directly since
+ * all 12 LED might be on and that amounts a lot of current.
+ */
 void InitPWM()
 {
 
@@ -76,13 +82,16 @@ void Execute()
     }
 
 }
+
+unsigned int LastRCON __attribute__ ((persistent));
 /*
  * 
  */
 int main()
 {
-
-    AD1PCFGL = 0xFFFF;  /*Ensure AN pins are digital for ICD 2 debugging*/
+    LastRCON = RCON;
+    RCON = 0;
+    AD1PCFGL = 0xFFFF;  /*Ensure AN pins are digital */
 
     InitPWMPins();
 

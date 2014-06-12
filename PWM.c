@@ -23,7 +23,7 @@ static void Set(pPwm_t This, PwmReg_t reg, unsigned int value)
             *(This->base +3) = value;
             break;
         case OCTMR :
-            *(This->base +4) = value;
+            // this is read only
             break;
     }
 }
@@ -58,6 +58,29 @@ Pwm_t pwm1 = {&OC1CON1, &Set, &Get};
 Pwm_t pwm2 = {&OC2CON1, &Set, &Get};
 Pwm_t pwm3 = {&OC3CON1, &Set, &Get};
 Pwm_t pwm4 = {&OC4CON1, &Set, &Get};
+
+
+
+void __attribute__((__interrupt__, no_auto_psv)) _OC1Interrupt(void)
+{
+  _OC1IF = 0;
+}
+
+void __attribute__((__interrupt__, no_auto_psv)) _OC2Interrupt(void)
+{
+  _OC2IF = 0;
+}
+
+void __attribute__((__interrupt__, no_auto_psv)) _OC3Interrupt(void)
+{
+  _OC3IF = 0;
+}
+
+void __attribute__((__interrupt__, no_auto_psv)) _OC4Interrupt(void)
+{
+  _OC4IF = 0;
+}
+
 
 #if 0
   #define  PWM_PERIOD 62500

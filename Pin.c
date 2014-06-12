@@ -10,8 +10,8 @@
 #include <stdlib.h>
 
 #include "Pin.h"
+#include "BitOperations.h"
 
-#define BIT(a) (1 <<(a))
 
 static PinState_t Get(pPin_t This)
 {

@@ -8,7 +8,7 @@
 
 #include "Pin.h"
 #include "Switch.h"
-#define BIT(a) (1 <<(a))
+#include "BitOperations.h"
 
 // using a shift in method to determine if the switch is debounced.
 // if the bounce is all 1's or all 0's then the switch is debounced

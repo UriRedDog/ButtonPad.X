@@ -46,6 +46,8 @@ struct _TIMER {
 extern Timer_t Timer1;
 extern Timer_t Timer2;
 extern Timer_t Timer3;
+extern Timer_t Timer4;
+extern Timer_t Timer5;
 
 
 #endif

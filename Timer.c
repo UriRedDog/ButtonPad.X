@@ -13,7 +13,7 @@
 #include "Switch.h"
 #include "Timer.h"
 
-#define BIT(a) (1 <<(a))
+#include "BitOperations.h"
 
 CallBackList mListTimer1[2];
 CallBackList mListTimer2[2]; 
