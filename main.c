@@ -34,6 +34,17 @@ _CONFIG3(SOSCSEL_IO &  WPDIS_WPDIS)
 
 _CONFIG4(RTCOSC_LPRC & DSWDTOSC_LPRC & DSBOREN_OFF & DSWDTEN_OFF)
 
+
+// we need 4 pins (RP20 - RP22) for an SPI slave
+void InitSPI()
+{
+    PPSInput(PPS_SS1IN, PPS_RP20);
+    PPSInput(PPS_SCK1IN, PPS_RP21);
+    PPSInput(PPS_SDI1, PPS_RP22);
+    PPSOutput(PPS_RP22, PPS_SDO1);
+
+}
+
 // we need to set RP16 - RP19 to be PWM outputs
 void InitPWMPins()
 {
@@ -48,8 +59,10 @@ void InitPWMPins()
  * a path to ground on the LED-GND[1-4] pins.  We place a FET in the path so that
  * turning it on, causes current to flow.  We cannot use pin directly since
  * all 12 LED might be on and that amounts a lot of current.
+ *
+ * all pwm will sync off timer 2 and we want center aligned
  */
-#define PWM_PERIOD 62500
+#define PWM_PERIOD 1000
 void InitPWM()
 {
     // turn all off
@@ -63,11 +76,29 @@ void InitPWM()
     pwm4.Set(&pwm4, OCCON2, 0);
 
 
-    pwm1.Set(&pwm1, OCCON2, 0x1F);  // sync with this OC module
-    pwm1.Set(&pwm1, OCR, PWM_PERIOD >> 1);
-    pwm1.Set(&pwm1, OCRS, PWM_PERIOD - 1);
-    pwm1.Set(&pwm1, OCCON1, 0x1C08);  // Fcy source, trigger 1 mode 0
+    pwm1.Set(&pwm1, OCCON2, 0x8C);  // sync with timer2
+    pwm1.Set(&pwm1, OCR, 10);  // on time
+    pwm1.Set(&pwm1, OCRS, 0x1000);  // off time
+    pwm1.Set(&pwm1, OCCON1, 0x1C05);  // timer2, dual compare single shot
+    pwm1.Set(&pwm1, OCxISR, 1);
 
+    pwm2.Set(&pwm2, OCCON2, 0x8C);  // sync with timer2
+    pwm2.Set(&pwm2, OCR, 0x1000);  // on time
+    pwm2.Set(&pwm2, OCRS, 0x2000);  // off time
+    pwm2.Set(&pwm2, OCCON1, 0x1c05);  // timer2, dual compare single shot
+    pwm2.Set(&pwm2, OCxISR, 1);
+
+    pwm3.Set(&pwm3, OCCON2, 0x8C);  // sync with timer2
+    pwm3.Set(&pwm3, OCR, 0x2000);  // on time
+    pwm3.Set(&pwm3, OCRS, 0x3000);  // off time
+    pwm3.Set(&pwm3, OCCON1, 0x1c05);  // timer2, dual compare single shot
+    pwm3.Set(&pwm3, OCxISR, 1);
+
+    pwm4.Set(&pwm4, OCCON2, 0x8C);  // sync with timer2
+    pwm4.Set(&pwm4, OCR, 0x3000);  // on time
+    pwm4.Set(&pwm4, OCRS, 0x4000);  // off time
+    pwm4.Set(&pwm4, OCCON1, 0x1c05);  // timer2, dual compare single shot
+    pwm4.Set(&pwm4, OCxISR, 1);
 }
 
 // timer 1 is the switch bebouncer and sampling
@@ -75,8 +106,18 @@ void InitPWM()
 // timer 3 may be used as a heartbeat LED
 void InitTimers()
 {
-    Timer1.Set(&Timer1, TxCON, 0);
-    Timer1.Set(&Timer1, TxPERIOD, 0x8ff);
+    // 2 mseconds
+    Timer1.Set(&Timer1, TxCON, 0x10);   // 1:8 prescaller
+    Timer1.Set(&Timer1, TxPERIOD, 0x1000);
+
+    // test timer 2
+    TRISAbits.TRISA0 = 0;
+
+    // 1 msecond
+    Timer2.Set(&Timer2, TxCON, 0x10);
+    Timer2.Set(&Timer2, TxPERIOD, 0x800);
+
+
 
 }
 
@@ -88,11 +129,15 @@ void Initialize()
     InitSwitches();
     InitTimers();
     InitPWM();
+    InitSPI();
 }
 
 void Execute()
 {
     Timer1.Execute(&Timer1, TxSTART);
+    Timer1.Set(&Timer1, TxISR, 1);
+    Timer2.Execute(&Timer2, TxSTART);
+    Timer2.Set(&Timer2, TxISR, 1);
     while(1)
     {
         // main loop

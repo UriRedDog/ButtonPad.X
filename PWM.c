@@ -25,6 +25,33 @@ static void Set(pPwm_t This, PwmReg_t reg, unsigned int value)
         case OCTMR :
             // this is read only
             break;
+        case OCxISR:
+            if(This->base == &OC1CON1)
+            {
+                if(value) IEC0bits.OC1IE = 1;
+                else IEC0bits.OC1IE = 0;
+            }
+            else if(This->base == &OC2CON1)
+            {
+                if(value) IEC0bits.OC2IE = 1;
+                else IEC0bits.OC2IE = 0;
+            }
+            else if(This->base == &OC3CON1)
+            {
+                if(value) IEC1bits.OC3IE = 1;
+                else IEC1bits.OC3IE = 0;
+            }
+            else if(This->base == &OC4CON1)
+            {
+                if(value) IEC1bits.OC4IE = 1;
+                else IEC1bits.OC4IE = 0;
+            }
+            else if(This->base == &OC5CON1)
+            {
+                if(value) IEC2bits.OC5IE = 1;
+                else IEC2bits.OC5IE = 0;
+            }
+            break;
     }
 }
 
@@ -58,6 +85,7 @@ Pwm_t pwm1 = {&OC1CON1, &Set, &Get};
 Pwm_t pwm2 = {&OC2CON1, &Set, &Get};
 Pwm_t pwm3 = {&OC3CON1, &Set, &Get};
 Pwm_t pwm4 = {&OC4CON1, &Set, &Get};
+//Pwm_t pwm5 = {&OC5CON1, &Set, &Get};  // we do not need 5
 
 
 
@@ -80,7 +108,10 @@ void __attribute__((__interrupt__, no_auto_psv)) _OC4Interrupt(void)
 {
   _OC4IF = 0;
 }
-
+void __attribute__((__interrupt__, no_auto_psv)) _OC5Interrupt(void)
+{
+  _OC5IF = 0;
+}
 
 #if 0
   #define  PWM_PERIOD 62500

@@ -16,7 +16,7 @@
 #include "BitOperations.h"
 
 CallBackList mListTimer1[2];
-CallBackList mListTimer2[1]= {NULL,NULL};
+CallBackList mListTimer2[1]= {{NULL,NULL}};
 CallBackList mListTimer3[2];
 
 
@@ -103,6 +103,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T2Interrupt(void)
 {
   CallBackList *list = mListTimer2;
 
+
+  LATAbits.LATA0 ^= 1;
   while(list != NULL && list->CallBack != NULL)
   {
     list->CallBack(list->instance);
