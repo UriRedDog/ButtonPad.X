@@ -12,6 +12,7 @@
       <itemPath>Timer.h</itemPath>
       <itemPath>BitOperations.h</itemPath>
       <itemPath>SPI.h</itemPath>
+      <itemPath>test.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -28,6 +29,7 @@
       <itemPath>PWM.c</itemPath>
       <itemPath>Timer.c</itemPath>
       <itemPath>SPI.c</itemPath>
+      <itemPath>test.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

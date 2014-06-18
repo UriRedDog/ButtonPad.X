@@ -76,6 +76,8 @@ static unsigned int Get(pPwm_t This, PwmReg_t reg)
         case OCTMR :
             retValue = *(This->base +4);
             break;
+        case OCxISR :
+            return;
     }
     return retValue;
 }
