@@ -38,6 +38,8 @@ struct _TIMER {
   volatile unsigned int * TimerBase;
   volatile unsigned int * Period;
   volatile unsigned int * Time;
+  volatile unsigned int * interruptEnable;
+  unsigned int mask;
   T_Set Set;
   T_Get Get;
   T_Execute Execute;

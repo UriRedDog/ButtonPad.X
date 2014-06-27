@@ -20,47 +20,24 @@ CallBackList mListTimer2[1]= {{NULL,NULL}};
 CallBackList mListTimer3[2];
 
 
-static bool Set(pTimer_t This, TimerSet_t timerset, unsigned int val) {
+static bool Set(pTimer_t This, TimerSet_t timerset, unsigned int value) {
 //  assert (This->mTimer == &T1CON || This->mTimer == &T2CON || This->mTimer == &T3CON)
 
     switch (timerset) {
         case TxCON:
-            *This->TimerBase = val;
+            *This->TimerBase = value;
             break;
         case TxPERIOD:
-            *This->Period = val;
+            *This->Period = value;
             break;
         case TxTIME:
-            *This->Time = val;
+            *This->Time = value;
             break;
         case TxISR:
-            if (This->TimerBase == &T1CON)
-            {
-                if (val) IEC0bits.T1IE = 1;
-                else IEC0bits.T1IE = 0;
-            }
-            else if (This->TimerBase == &T2CON)
-            {
-                if (val) IEC0bits.T2IE = 1;
-                else IEC0bits.T2IE = 0;
-            }
-            else if (This->TimerBase == &T3CON)
-            {
-                if (val) IEC0bits.T3IE = 1;
-                else IEC0bits.T3IE = 0;
-            }
-            else if (This->TimerBase == &T4CON)
-            {
-                if (val) IEC1bits.T4IE = 1;
-                else IEC1bits.T4IE = 0;
-            }
-            else if (This->TimerBase == &T5CON)
-            {
-                if (val) IEC1bits.T5IE = 1;
-                else IEC1bits.T5IE = 0;
-            }
+            if(value == 0)
+                *(This->interruptEnable) &= ~This->mask;
             else
-                return false;
+                *(This->interruptEnable) |= This->mask;
             break;
         case TxISRPRIORITY:
             break; // not used
@@ -139,11 +116,11 @@ void ShutDown(void const * instance)
         PowerManager(0);
 }
 
-Timer_t Timer1 = {&T1CON, &PR1, &TMR1, Set, Get, Execute};
-Timer_t Timer2 = {&T2CON, &PR2, &TMR2, Set, Get, Execute};
-Timer_t Timer3 = {&T3CON, &PR3, &TMR3, Set, Get, Execute};
-Timer_t Timer4 = {&T4CON, &PR4, &TMR4, Set, Get, Execute};
-Timer_t Timer5 = {&T5CON, &PR5, &TMR5, Set, Get, Execute};
+Timer_t Timer1 = {&T1CON, &PR1, &TMR1, &IEC0, BIT(3), Set, Get, Execute};
+Timer_t Timer2 = {&T2CON, &PR2, &TMR2, &IEC0, BIT(7), Set, Get, Execute};
+Timer_t Timer3 = {&T3CON, &PR3, &TMR3, &IEC0, BIT(8), Set, Get, Execute};
+Timer_t Timer4 = {&T4CON, &PR4, &TMR4, &IEC1, BIT(11), Set, Get, Execute};
+Timer_t Timer5 = {&T5CON, &PR5, &TMR5, &IEC1, BIT(12), Set, Get, Execute};
 
 CallBackList mListTimer1[2] = {
 {SampleSwitches, NULL},

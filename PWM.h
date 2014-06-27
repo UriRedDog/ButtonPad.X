@@ -24,6 +24,8 @@ typedef unsigned int (*PW_Get)(pPwm_t This, PwmReg_t reg);
 
 struct _PWM {
   volatile unsigned int *base;
+  volatile unsigned int *interruptEnable;
+  unsigned int bitMask;
   PW_Set Set;
   PW_Get Get;
 };
