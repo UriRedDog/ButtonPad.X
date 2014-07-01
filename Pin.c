@@ -21,32 +21,32 @@
 
 static PinState_t Get(pPin_t This)
 {
-  return (*(This->mpLat - PORT_OFFSET) & This->mMask) ? PIN_HIGH : PIN_LOW;
+  return (*This->mPort & This->mMask) ? PIN_HIGH : PIN_LOW;
 }
 
 static void Set(pPin_t This, PinState_t newState)
 {
   if(newState == PIN_HIGH)
-    *This->mpLat |= This->mMask;
+    *This->mLat |= This->mMask;
   if(newState == PIN_LOW)
-    *This->mpLat &= ~This->mMask;
+    *This->mLat &= ~This->mMask;
   // we could assert if the newState is not valid, but we will do nothing
 }
 
 static void SetMode(pPin_t This, PinMode_t newMode)
 {
     if (newMode == PIN_OUTPUT) {
-        *(This->mpLat + 1) &= ~This->mMask; // make sure pullup is disabled
-        *(This->mpLat - 2) &= ~This->mMask; // set the TRIS to configure pin as an output
+        *This->mOdc &= ~This->mMask; // make sure pullup is disabled
+        *This->mTris &= ~This->mMask; // set the TRIS to configure pin as an output
     }
     if (newMode == PIN_INPUT) {
-        *(This->mpLat + 1) &= ~This->mMask; // make sure pullup is disabled
-        *(This->mpLat - 2) |= This->mMask; // set the TRIS to configure pin as an input
+        *This->mOdc &= ~This->mMask; // make sure pullup is disabled
+        *This->mLat |= This->mMask; // set the TRIS to configure pin as an input
     }
 
     if (newMode == PIN_INPUT_PULLUP) {
-        *(This->mpLat - 2) |= This->mMask; // set the TRIS to configure pin as an input
-        *(This->mpLat + 1) |= This->mMask;
+        *This->mTris |= This->mMask; // set the TRIS to configure pin as an input
+        *This->mOdc |= This->mMask;
     }
     // we could assert if the newMode is not valid, but we will do nothing
 }
@@ -62,37 +62,37 @@ void InitPins()
 
 
 
-Pin_t AnodeRed1 =    {BIT(15), &LATB, SetMode, Set, Get};
-Pin_t AnodeGreen1 =  {BIT(14), &LATB, SetMode, Set, Get};
-Pin_t AnodeBlue1 =   {BIT(13), &LATB, SetMode, Set, Get};
+Pin_t AnodeRed1 =    {BIT(15), &TRISB, &PORTB, &LATB, &ODCB, SetMode, Set, Get};
+Pin_t AnodeGreen1 =  {BIT(14), &TRISB, &PORTB, &LATB, &ODCB, SetMode, Set, Get};
+Pin_t AnodeBlue1 =   {BIT(13), &TRISB, &PORTB, &LATB, &ODCB, SetMode, Set, Get};
 
-Pin_t AnodeRed2 =    {BIT(12), &LATB, SetMode, Set, Get};
-Pin_t AnodeGreen2 =  {BIT(11), &LATB, SetMode, Set, Get};
-Pin_t AnodeBlue2 =   {BIT(10), &LATB, SetMode, Set, Get};
+Pin_t AnodeRed2 =    {BIT(12), &TRISB, &PORTB, &LATB, &ODCB, SetMode, Set, Get};
+Pin_t AnodeGreen2 =  {BIT(11), &TRISB, &PORTB, &LATB, &ODCB, SetMode, Set, Get};
+Pin_t AnodeBlue2 =   {BIT(10), &TRISB, &PORTB, &LATB, &ODCB, SetMode, Set, Get};
 
-Pin_t AnodeRed3 =    {BIT(9), &LATB, SetMode, Set, Get};
-Pin_t AnodeGreen3 =  {BIT(8), &LATB, SetMode, Set, Get};
-Pin_t AnodeBlue3 =   {BIT(7), &LATB, SetMode, Set, Get};
+Pin_t AnodeRed3 =    {BIT(9), &TRISB, &PORTB, &LATB, &ODCB, SetMode, Set, Get};
+Pin_t AnodeGreen3 =  {BIT(8), &TRISB, &PORTB, &LATB, &ODCB, SetMode, Set, Get};
+Pin_t AnodeBlue3 =   {BIT(7), &TRISB, &PORTB, &LATB, &ODCB, SetMode, Set, Get};
 
-Pin_t AnodeRed4 =    {BIT(6), &LATB, SetMode, Set, Get};
-Pin_t AnodeGreen4 =  {BIT(5), &LATB, SetMode, Set, Get};
-Pin_t AnodeBlue4 =   {BIT(4), &LATB, SetMode, Set, Get};
+Pin_t AnodeRed4 =    {BIT(6), &TRISB, &PORTB, &LATB, &ODCB, SetMode, Set, Get};
+Pin_t AnodeGreen4 =  {BIT(5), &TRISB, &PORTB, &LATB, &ODCB, SetMode, Set, Get};
+Pin_t AnodeBlue4 =   {BIT(4), &TRISB, &PORTB, &LATB, &ODCB, SetMode, Set, Get};
 
 // pin B0 and B1 are for ICE
 
 // these are non-mappable pins
-Pin_t Row1 = {BIT(0), &LATA, SetMode, Set, Get};
-Pin_t Row2 = {BIT(1), &LATA, SetMode, Set, Get};
-Pin_t Row3 = {BIT(2), &LATA, SetMode, Set, Get};
-Pin_t Row4 = {BIT(3), &LATA, SetMode, Set, Get};
+Pin_t Row1 = {BIT(0), &TRISA, &PORTA, &LATA, &ODCA, SetMode, Set, Get};
+Pin_t Row2 = {BIT(1), &TRISA, &PORTA, &LATA, &ODCA, SetMode, Set, Get};
+Pin_t Row3 = {BIT(2), &TRISA, &PORTA, &LATA, &ODCA, SetMode, Set, Get};
+Pin_t Row4 = {BIT(3), &TRISA, &PORTA, &LATA, &ODCA, SetMode, Set, Get};
 
 
-Pin_t Col1 = {BIT(7), &LATA, SetMode, Set, Get};
-Pin_t Col2 = {BIT(8), &LATA, SetMode, Set, Get};
-Pin_t Col3 = {BIT(9), &LATA, SetMode, Set, Get};
-Pin_t Col4 = {BIT(10),&LATA, SetMode, Set, Get};
+Pin_t Col1 = {BIT(7), &TRISA, &PORTA, &LATA, &ODCA, SetMode, Set, Get};
+Pin_t Col2 = {BIT(8), &TRISA, &PORTA, &LATA, &ODCA, SetMode, Set, Get};
+Pin_t Col3 = {BIT(9), &TRISA, &PORTA, &LATA, &ODCA, SetMode, Set, Get};
+Pin_t Col4 = {BIT(10),&TRISA, &PORTA, &LATA, &ODCA, SetMode, Set, Get};
 
-Pin_t PowerPin = {BIT(4), &LATA, SetMode, Set, Get};
+Pin_t PowerPin = {BIT(4), &TRISA, &PORTA, &LATA, &ODCA, SetMode, Set, Get};
 
 // the Cathodes need to be mappable pins and we will map an output compare PWM to each
 // the pins do not need an object, we will let the hardware control these

@@ -18,7 +18,7 @@ static unsigned int bounceArray[16];
 
 // we place the switches into a compile time array so that we can access
 // all of them.
-static const pSwitch_t SwitchArray[16] = {
+static pSwitch_t SwitchArray[16] = {
 &switchR1C1,
 &switchR2C1,
 &switchR3C1,

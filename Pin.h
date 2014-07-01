@@ -27,7 +27,10 @@ typedef void (*P_Set)(pPin_t This, PinState_t newState);
 
 struct _PIN {
   unsigned int mMask;
-  volatile unsigned int *mpLat;
+  volatile unsigned int *mTris;
+  volatile unsigned int *mPort;
+  volatile unsigned int *mLat;
+  volatile unsigned int *mOdc;
   P_SetMode SetMode;
   P_Set Set;
   P_Get Get;
