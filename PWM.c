@@ -5,6 +5,7 @@
 #include <xc.h>
 #include "BitOperations.h"
 #include "PWM.h"
+#include "UnitTest.h"
 
 static void Set(pPwm_t This, PwmReg_t reg, unsigned int value)
 {
@@ -25,7 +26,7 @@ static void Set(pPwm_t This, PwmReg_t reg, unsigned int value)
         case OCTMR :
             // this is read only
             break;
-        case OCxISR:
+        case OCISR:
             // set or clear the interrupt enable, 0 == clear
             if (value == 0)
                 *(This->interruptEnable) &= ~This->bitMask;
@@ -38,7 +39,7 @@ static void Set(pPwm_t This, PwmReg_t reg, unsigned int value)
 
 static unsigned int Get(pPwm_t This, PwmReg_t reg)
 {
-    unsigned int retValue = 0;
+    unsigned int retValue = ~0;
     switch(reg)
     {
         case OCCON1:
@@ -56,8 +57,9 @@ static unsigned int Get(pPwm_t This, PwmReg_t reg)
         case OCTMR :
             retValue = *(This->base +4);
             break;
-        case OCxISR :
+        case OCISR :
             retValue = *(This->interruptEnable) & This->bitMask;
+            retValue = (retValue) ? 1 : 0;
             break;
     }
     return retValue;
@@ -76,17 +78,14 @@ void __attribute__((__interrupt__, no_auto_psv)) _OC1Interrupt(void)
 {
   _OC1IF = 0;
 }
-
 void __attribute__((__interrupt__, no_auto_psv)) _OC2Interrupt(void)
 {
   _OC2IF = 0;
 }
-
 void __attribute__((__interrupt__, no_auto_psv)) _OC3Interrupt(void)
 {
   _OC3IF = 0;
 }
-
 void __attribute__((__interrupt__, no_auto_psv)) _OC4Interrupt(void)
 {
   _OC4IF = 0;
@@ -95,3 +94,66 @@ void __attribute__((__interrupt__, no_auto_psv)) _OC5Interrupt(void)
 {
   _OC5IF = 0;
 }
+
+
+#if UNIT_TESTS == 1
+
+
+
+
+UnitTestResult_t UnitTestPwmRegisters()
+{
+    // test setting registers
+    unsigned int setValue;
+    unsigned int getValue;
+
+    setValue = 1000;
+    pwm1.Set(&pwm1, OCCON1, setValue);
+    getValue = pwm1.Get(&pwm1, OCCON1);
+    if(setValue != getValue)
+        return UnitTestFail;
+
+    pwm1.Set(&pwm1, OCCON2, setValue);
+    getValue = pwm1.Get(&pwm1, OCCON2);
+    if(setValue != getValue)
+        return UnitTestFail;
+
+    pwm1.Set(&pwm1, OCRS, setValue);
+    getValue = pwm1.Get(&pwm1, OCRS);
+    if(setValue != getValue)
+        return UnitTestFail;
+
+    pwm1.Set(&pwm1, OCR, setValue);
+    getValue = pwm1.Get(&pwm1, OCR);
+    if(setValue != getValue)
+        return UnitTestFail;
+
+    pwm1.Set(&pwm1, OCTMR, setValue);
+    getValue = pwm1.Get(&pwm1, OCTMR);
+    if(setValue != getValue)
+        return UnitTestFail;
+
+    setValue = 1;
+    pwm1.Set(&pwm1, OCISR, setValue);
+    getValue = pwm1.Get(&pwm1, OCISR);
+    if(setValue != getValue)
+        return UnitTestFail;
+    pwm1.Set(&pwm1, OCISR, 0);
+
+    return UnitTestSuccess;
+}
+
+void DoAllPwmTests()
+{
+    UnitTestResult_t didFail;
+
+    didFail = UnitTestPwmRegisters();
+    if(didFail == UnitTestFail)
+        while(1)
+            Nop(); // some instruction to set break point
+
+    // TODO add more tests
+}
+
+
+#endif

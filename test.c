@@ -5,6 +5,8 @@
  *
  * testing switches will requier user input by pressing the
  * switch that has an led in the on state.
+ *
+ * NOTE:  this is not a unit test.  This is a runtime startup test.
  */
 
 #include <xc.h>

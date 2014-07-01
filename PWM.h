@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-typedef enum _PWM_REGISTER { OCCON1 = 0, OCCON2, OCRS, OCR, OCTMR, OCxISR } PwmReg_t;
+typedef enum _PWM_REGISTER { OCCON1 = 0, OCCON2, OCRS, OCR, OCTMR, OCISR } PwmReg_t;
 struct _PWM;
 typedef struct _PWM const Pwm_t;
 typedef Pwm_t const * pPwm_t ;

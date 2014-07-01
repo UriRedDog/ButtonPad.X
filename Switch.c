@@ -9,6 +9,7 @@
 #include "Pin.h"
 #include "Switch.h"
 #include "BitOperations.h"
+#include "UnitTest.h"
 
 // using a shift in method to determine if the switch is debounced.
 // if the bounce is all 1's or all 0's then the switch is debounced
@@ -17,7 +18,7 @@ static unsigned int bounceArray[16];
 
 // we place the switches into a compile time array so that we can access
 // all of them.
-static pSwitch_t SwitchArray[16] = {
+static const pSwitch_t SwitchArray[16] = {
 &switchR1C1,
 &switchR2C1,
 &switchR3C1,
@@ -49,6 +50,7 @@ void InitSwitches()
         ps->row->SetMode(ps->row, PIN_INPUT_PULLUP);
         ps->col->SetMode(ps->col, PIN_OUTPUT);
         ps->col->Set(ps->col, PIN_HIGH);
+        ps++;
      }
 
 }
@@ -117,3 +119,25 @@ Switch_t switchR2C4 = {&Row2, &Col4, &bounceArray[13], Sample, GetState};
 Switch_t switchR3C4 = {&Row3, &Col4, &bounceArray[14], Sample, GetState};
 Switch_t switchR4C4 = {&Row4, &Col4, &bounceArray[15], Sample, GetState};
 
+
+#if UNIT_TESTS == 1
+// we can use the simpulator or debugger to set pins and verify operation
+
+UnitTestResult_t UnitTestSwitchRegisters()
+{
+
+    return UnitTestSuccess;
+}
+
+void DoAllSwitchTests()
+{
+    UnitTestResult_t didFail;
+
+    didFail = UnitTestSwitchRegisters();
+    if(didFail == UnitTestFail)
+        while(1)
+            Nop(); // some instruction to set break point
+
+    // TODO add more tests
+}
+#endif

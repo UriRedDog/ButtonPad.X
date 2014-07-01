@@ -80,25 +80,25 @@ void InitPWM()
     pwm1.Set(&pwm1, OCR, 10);  // on time
     pwm1.Set(&pwm1, OCRS, 0x1000);  // off time
     pwm1.Set(&pwm1, OCCON1, 0x1C05);  // timer2, dual compare single shot
-    pwm1.Set(&pwm1, OCxISR, 1);
+    pwm1.Set(&pwm1, OCISR, 1);
 
     pwm2.Set(&pwm2, OCCON2, 0x8C);  // sync with timer2
     pwm2.Set(&pwm2, OCR, 0x1000);  // on time
     pwm2.Set(&pwm2, OCRS, 0x2000);  // off time
     pwm2.Set(&pwm2, OCCON1, 0x1c05);  // timer2, dual compare single shot
-    pwm2.Set(&pwm2, OCxISR, 1);
+    pwm2.Set(&pwm2, OCISR, 1);
 
     pwm3.Set(&pwm3, OCCON2, 0x8C);  // sync with timer2
     pwm3.Set(&pwm3, OCR, 0x2000);  // on time
     pwm3.Set(&pwm3, OCRS, 0x3000);  // off time
     pwm3.Set(&pwm3, OCCON1, 0x1c05);  // timer2, dual compare single shot
-    pwm3.Set(&pwm3, OCxISR, 1);
+    pwm3.Set(&pwm3, OCISR, 1);
 
     pwm4.Set(&pwm4, OCCON2, 0x8C);  // sync with timer2
     pwm4.Set(&pwm4, OCR, 0x3000);  // on time
     pwm4.Set(&pwm4, OCRS, 0x4000);  // off time
     pwm4.Set(&pwm4, OCCON1, 0x1c05);  // timer2, dual compare single shot
-    pwm4.Set(&pwm4, OCxISR, 1);
+    pwm4.Set(&pwm4, OCISR, 1);
 }
 
 // timer 1 is the switch bebouncer and sampling
@@ -107,15 +107,15 @@ void InitPWM()
 void InitTimers()
 {
     // 2 mseconds
-    Timer1.Set(&Timer1, TxCON, 0x10);   // 1:8 prescaller
-    Timer1.Set(&Timer1, TxPERIOD, 0x1000);
+    Timer1.Set(&Timer1, TCON, 0x10);   // 1:8 prescaller
+    Timer1.Set(&Timer1, TPERIOD, 0x1000);
 
     // test timer 2
     TRISAbits.TRISA0 = 0;
 
     // 1 msecond
-    Timer2.Set(&Timer2, TxCON, 0x10);
-    Timer2.Set(&Timer2, TxPERIOD, 0x800);
+    Timer2.Set(&Timer2, TCON, 0x10);
+    Timer2.Set(&Timer2, TPERIOD, 0x800);
 
 
 
@@ -134,10 +134,10 @@ void Initialize()
 
 void Execute()
 {
-    Timer1.Execute(&Timer1, TxSTART);
-    Timer1.Set(&Timer1, TxISR, 1);
-    Timer2.Execute(&Timer2, TxSTART);
-    Timer2.Set(&Timer2, TxISR, 1);
+    Timer1.Execute(&Timer1, TSTART);
+    Timer1.Set(&Timer1, TISR, 1);
+    Timer2.Execute(&Timer2, TSTART);
+    Timer2.Set(&Timer2, TISR, 1);
     while(1)
     {
         // main loop

@@ -21,10 +21,10 @@ struct _TIMER;
 typedef struct _TIMER const Timer_t;
 typedef Timer_t const * pTimer_t;
 
-typedef enum _TIMERSET { TxCON = 0, TxPERIOD, TxTIME, TxISR, TxISRPRIORITY } TimerSet_t;
-typedef enum _TIMEREXE { TxSTART = 0, TxSTOP} TimerExecute_t;
-typedef bool (*T_Set) (pTimer_t This, TimerSet_t timerset, unsigned int val);
-typedef unsigned int (*T_Get) (pTimer_t This, TimerSet_t timerset);
+typedef enum _TIMERREG { TCON = 0, TPERIOD, TTIME, TISR, TISRPRIORITY } TimerReg_t;
+typedef enum _TIMEREXE { TSTART = 0, TSTOP} TimerExecute_t;
+typedef bool (*T_Set) (pTimer_t This, TimerReg_t timerReg, unsigned int val);
+typedef unsigned int (*T_Get) (pTimer_t This, TimerReg_t timerReg);
 typedef void (*T_Execute) (pTimer_t This, TimerExecute_t timerexe);
 typedef void (*T_CallBack)(void const * instance);
 
@@ -34,6 +34,7 @@ typedef struct _CallBackList
   void const * instance;
 } CallBackList;
 
+// timer register address order is all messed up, so we need many members
 struct _TIMER {
   volatile unsigned int * TimerBase;
   volatile unsigned int * Period;

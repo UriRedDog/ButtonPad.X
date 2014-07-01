@@ -13,6 +13,7 @@
       <itemPath>BitOperations.h</itemPath>
       <itemPath>SPI.h</itemPath>
       <itemPath>test.h</itemPath>
+      <itemPath>UnitTest.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"

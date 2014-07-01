@@ -1,10 +1,13 @@
 
 /*
-* PIN.c
-*
-* create global PIN structures using compile time constructors
-* The InitNewPIN is called to set TRIS and ADPCFG registers since
-* this cannot be accomplished in the compile time constructors.
+ * PIN.c
+ *
+ * create global PIN structures using compile time constructors
+ * The InitNewPIN is called to set TRIS and ADPCFG registers since
+ * this cannot be accomplished in the compile time constructors.
+ *
+ * we use the LAT as the base register.  TRIS, PORT, and ODCB are
+ * pointer offsets added or subtracted.
 */
 #include <xc.h>
 #include <stdlib.h>
@@ -12,10 +15,13 @@
 #include "Pin.h"
 #include "BitOperations.h"
 
+#define TRIS_OFFSET 2
+#define PORT_OFFSET 1
+#define ODC_OFFSET +1
 
 static PinState_t Get(pPin_t This)
 {
-  return (*(This->mpLat-1) & This->mMask) ? PIN_HIGH : PIN_LOW;
+  return (*(This->mpLat - PORT_OFFSET) & This->mMask) ? PIN_HIGH : PIN_LOW;
 }
 
 static void Set(pPin_t This, PinState_t newState)
@@ -49,10 +55,6 @@ void InitPins()
 {
     //  preset all Analog pins as digital.  An ADC object (if used) will reset individual bits
     AD1PCFG = 0xFFFF;
-
-
-
-
 }
 
 
