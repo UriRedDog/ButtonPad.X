@@ -38,9 +38,9 @@
 
 void PowerManager(PowerState_t state)
 {
-    PowerPin.SetMode(&PowerPin, PIN_OUTPUT);
-    if(state == POWER_ON)
-        PowerPin.Set(&PowerPin, PIN_HIGH);
-    else
-        PowerPin.Set(&PowerPin, PIN_LOW);
+  PowerPin.SetMode(&PowerPin, PIN_OUTPUT);
+  if (state == POWER_ON)
+    PowerPin.Set(&PowerPin, PIN_HIGH);
+  else
+    PowerPin.Set(&PowerPin, PIN_LOW);
 }

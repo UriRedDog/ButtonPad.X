@@ -60,61 +60,64 @@ static pSwitch_t SwitchArray[16] = {
 
 // we need a runtime method to set initial registers and some pins need to enable
 // internal weak pullup.  Then we need to set up a timer
+
 void InitSwitches()
 {
-    unsigned int i;
-    pSwitch_t ps = SwitchArray[0];
-    for (i=0; i < 16; i++)
-    {
-        bounceArray[i] = 0;
-        ps->row->SetMode(ps->row, PIN_INPUT_PULLUP);
-        ps->col->SetMode(ps->col, PIN_OUTPUT);
-        ps->col->Set(ps->col, PIN_HIGH);
-        ps++;
-     }
-
+  unsigned int i;
+  pSwitch_t ps = SwitchArray[0];
+  for (i = 0; i < 16; i++)
+  {
+    bounceArray[i] = 0;
+    ps->row->SetMode(ps->row, PIN_INPUT_PULLUP);
+    ps->col->SetMode(ps->col, PIN_OUTPUT);
+    ps->col->Set(ps->col, PIN_HIGH);
+    ps++;
+  }
 }
 
 // for each col, we sample the all the rows
 // we shift the sampled bit into the bounce count
+
 void SampleSwitches(void const * instance)
 {
-    pSwitch_t ps = SwitchArray[0];
-    int i;
-    for(i = 0; i < 16; i++)
-    {
-        ps->Sample(ps);
-        ps++;
-    }
+  pSwitch_t ps = SwitchArray[0];
+  int i;
+  for (i = 0; i < 16; i++)
+  {
+    ps->Sample(ps);
+    ps++;
+  }
 }
 
 
 // for each col, we sample the all the rows
 // we shift the sampled bit into the bounce count
+
 static void Sample(pSwitch_t This)
 {
-    PinState_t state;
-    pPin_t row = This->row;
-    pPin_t col = This->col;
-    col->Set(col, PIN_LOW);
-    state = row->Get(row);
-    if(state == PIN_HIGH)
-        *This->bounceCount = (*This->bounceCount << 1) | 0x1;
-    else
-        *This->bounceCount = (*This->bounceCount << 1);
-    col->Set(col, PIN_HIGH);
+  PinState_t state;
+  pPin_t row = This->row;
+  pPin_t col = This->col;
+  col->Set(col, PIN_LOW);
+  state = row->Get(row);
+  if (state == PIN_HIGH)
+    *This->bounceCount = (*This->bounceCount << 1) | 0x1;
+  else
+    *This->bounceCount = (*This->bounceCount << 1);
+  col->Set(col, PIN_HIGH);
 }
 
 
 // select the column and then read the row
+
 static SwitchState_t GetState(pSwitch_t This)
 {
-    if(*This->bounceCount == 0xFFFF)
-        return SWITCH_ON;
-    else if(*This->bounceCount == 0)
-        return SWITCH_OFF;
-    else
-        return SWITCH_BOUNCE;
+  if (*This->bounceCount == 0xFFFF)
+    return SWITCH_ON;
+  else if (*This->bounceCount == 0)
+    return SWITCH_OFF;
+  else
+    return SWITCH_BOUNCE;
 }
 
 
@@ -145,19 +148,18 @@ Switch_t switchR4C4 = {&Row4, &Col4, &bounceArray[15], Sample, GetState};
 
 UnitTestResult_t UnitTestSwitchRegisters()
 {
-
-    return UnitTestSuccess;
+  return UnitTestSuccess;
 }
 
 void DoAllSwitchTests()
 {
-    UnitTestResult_t didFail;
+  UnitTestResult_t didFail;
 
-    didFail = UnitTestSwitchRegisters();
-    if(didFail == UnitTestFail)
-        while(1)
-            Nop(); // some instruction to set break point
+  didFail = UnitTestSwitchRegisters();
+  if (didFail == UnitTestFail)
+    while (1)
+      Nop(); // some instruction to set break point
 
-    // TODO add more tests
+  // TODO add more tests
 }
 #endif

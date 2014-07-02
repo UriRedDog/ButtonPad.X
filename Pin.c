@@ -45,35 +45,38 @@ static PinState_t Get(pPin_t This)
 
 static void Set(pPin_t This, PinState_t newState)
 {
-  if(newState == PIN_HIGH)
+  if (newState == PIN_HIGH)
     *This->mLat |= This->mMask;
-  if(newState == PIN_LOW)
+  if (newState == PIN_LOW)
     *This->mLat &= ~This->mMask;
   // we could assert if the newState is not valid, but we will do nothing
 }
 
 static void SetMode(pPin_t This, PinMode_t newMode)
 {
-    if (newMode == PIN_OUTPUT) {
-        *This->mOdc &= ~This->mMask; // make sure pullup is disabled
-        *This->mTris &= ~This->mMask; // set the TRIS to configure pin as an output
-    }
-    if (newMode == PIN_INPUT) {
-        *This->mOdc &= ~This->mMask; // make sure pullup is disabled
-        *This->mLat |= This->mMask; // set the TRIS to configure pin as an input
-    }
+  if (newMode == PIN_OUTPUT)
+  {
+    *This->mOdc &= ~This->mMask; // make sure pullup is disabled
+    *This->mTris &= ~This->mMask; // set the TRIS to configure pin as an output
+  }
+  if (newMode == PIN_INPUT)
+  {
+    *This->mOdc &= ~This->mMask; // make sure pullup is disabled
+    *This->mLat |= This->mMask; // set the TRIS to configure pin as an input
+  }
 
-    if (newMode == PIN_INPUT_PULLUP) {
-        *This->mTris |= This->mMask; // set the TRIS to configure pin as an input
-        *This->mOdc |= This->mMask;
-    }
-    // we could assert if the newMode is not valid, but we will do nothing
+  if (newMode == PIN_INPUT_PULLUP)
+  {
+    *This->mTris |= This->mMask; // set the TRIS to configure pin as an input
+    *This->mOdc |= This->mMask;
+  }
+  // we could assert if the newMode is not valid, but we will do nothing
 }
 
 void InitPins()
 {
-    //  preset all Analog pins as digital.  An ADC object (if used) will reset individual bits
-    AD1PCFG = 0xFFFF;
+  //  preset all Analog pins as digital.  An ADC object (if used) will reset individual bits
+  AD1PCFG = 0xFFFF;
 }
 
 

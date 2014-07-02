@@ -39,13 +39,12 @@ typedef Switch_t const * pSwitch_t;
 typedef void (*S_Sample)(pSwitch_t This);
 typedef SwitchState_t (*S_GetState)(pSwitch_t This);
 
-struct _SWITCH
-{
-    pPin_t row;
-    pPin_t col;
-    unsigned int * bounceCount;
-    S_Sample Sample;
-    S_GetState GetState;
+struct _SWITCH {
+  pPin_t row;
+  pPin_t col;
+  unsigned int * bounceCount;
+  S_Sample Sample;
+  S_GetState GetState;
 };
 
 extern Switch_t switchR1C1;

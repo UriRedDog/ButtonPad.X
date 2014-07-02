@@ -32,7 +32,7 @@ typedef struct _CallBackList
 {
   T_CallBack CallBack;
   void const * instance;
-} CallBackList;
+} CallBackList_t;
 
 // timer register address order is all messed up, so we need many members
 struct _TIMER {
