@@ -37,6 +37,7 @@
                    projectFiles="false">
       <itemPath>Makefile</itemPath>
       <itemPath>dist/debug/debug/ButtonPad.X.debug.map</itemPath>
+      <itemPath>Button_Pad_Breakout.pdf</itemPath>
     </logicalFolder>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
@@ -100,12 +101,12 @@
         <property key="oXC16gcc-mauxflash" value="false"/>
         <property key="oXC16gcc-mpa-lvl" value=""/>
         <property key="oXC16gcc-name-text-sec" value=""/>
-        <property key="oXC16gcc-near-chars" value="true"/>
+        <property key="oXC16gcc-near-chars" value="false"/>
         <property key="oXC16gcc-no-isr-warn" value="false"/>
         <property key="oXC16gcc-sfr-warn" value="false"/>
         <property key="oXC16gcc-smar-io-lvl" value="1"/>
         <property key="oXC16gcc-smart-io-fmt" value=""/>
-        <property key="optimization-level" value="1"/>
+        <property key="optimization-level" value="0"/>
         <property key="post-instruction-scheduling" value="default"/>
         <property key="pre-instruction-scheduling" value="default"/>
         <property key="preprocessor-macros" value=""/>
@@ -192,26 +193,26 @@
         <property key="save-temps" value="false"/>
       </C30Global>
       <RealICEPlatformTool>
-        <property key="ADC 1" value="true"/>
+        <property key="ADC 1" value="false"/>
         <property key="AutoSelectMemRanges" value="auto"/>
-        <property key="COMPARATOR" value="true"/>
-        <property key="CRC" value="true"/>
-        <property key="CTMU" value="true"/>
-        <property key="Freeze All Other Peripherals" value="true"/>
-        <property key="I2C1" value="true"/>
-        <property key="I2C2" value="true"/>
-        <property key="INPUT CAPTURE 1" value="true"/>
-        <property key="INPUT CAPTURE 2" value="true"/>
-        <property key="INPUT CAPTURE 3" value="true"/>
-        <property key="INPUT CAPTURE 4" value="true"/>
-        <property key="INPUT CAPTURE 5" value="true"/>
-        <property key="OUTPUT COMPARE 1" value="true"/>
-        <property key="OUTPUT COMPARE 2" value="true"/>
-        <property key="OUTPUT COMPARE 3" value="true"/>
-        <property key="OUTPUT COMPARE 4" value="true"/>
-        <property key="OUTPUT COMPARE 5" value="true"/>
-        <property key="PARALLEL MASTER/SLAVE PORT" value="true"/>
-        <property key="REFERENCE CLOCK" value="true"/>
+        <property key="COMPARATOR" value="false"/>
+        <property key="CRC" value="false"/>
+        <property key="CTMU" value="false"/>
+        <property key="Freeze All Other Peripherals" value="false"/>
+        <property key="I2C1" value="false"/>
+        <property key="I2C2" value="false"/>
+        <property key="INPUT CAPTURE 1" value="false"/>
+        <property key="INPUT CAPTURE 2" value="false"/>
+        <property key="INPUT CAPTURE 3" value="false"/>
+        <property key="INPUT CAPTURE 4" value="false"/>
+        <property key="INPUT CAPTURE 5" value="false"/>
+        <property key="OUTPUT COMPARE 1" value="false"/>
+        <property key="OUTPUT COMPARE 2" value="false"/>
+        <property key="OUTPUT COMPARE 3" value="false"/>
+        <property key="OUTPUT COMPARE 4" value="false"/>
+        <property key="OUTPUT COMPARE 5" value="false"/>
+        <property key="PARALLEL MASTER/SLAVE PORT" value="false"/>
+        <property key="REFERENCE CLOCK" value="false"/>
         <property key="RIExTrigs.Five" value="OFF"/>
         <property key="RIExTrigs.Four" value="OFF"/>
         <property key="RIExTrigs.One" value="OFF"/>
@@ -220,19 +221,19 @@
         <property key="RIExTrigs.Three" value="OFF"/>
         <property key="RIExTrigs.Two" value="OFF"/>
         <property key="RIExTrigs.Zero" value="OFF"/>
-        <property key="SPI 1" value="true"/>
-        <property key="SPI 2" value="true"/>
+        <property key="SPI 1" value="false"/>
+        <property key="SPI 2" value="false"/>
         <property key="SecureSegment.SegmentProgramming" value="FullChipProgramming"/>
-        <property key="TIMER1" value="true"/>
-        <property key="TIMER2" value="true"/>
-        <property key="TIMER3" value="true"/>
-        <property key="TIMER4" value="true"/>
-        <property key="TIMER5" value="true"/>
+        <property key="TIMER1" value="false"/>
+        <property key="TIMER2" value="false"/>
+        <property key="TIMER3" value="false"/>
+        <property key="TIMER4" value="false"/>
+        <property key="TIMER5" value="false"/>
         <property key="ToolFirmwareFilePath"
                   value="Press to browse for a specific firmware version"/>
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
-        <property key="UART 1" value="true"/>
-        <property key="UART 2" value="true"/>
+        <property key="UART 1" value="false"/>
+        <property key="UART 2" value="false"/>
         <property key="debugoptions.useswbreakpoints" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="hwtoolclock.instructionspeed" value="4"/>
@@ -263,6 +264,22 @@
         <property key="programoptions.preserveuserid" value="false"/>
         <property key="programoptions.usehighvoltageonmclr" value="false"/>
         <property key="programoptions.uselvpprogramming" value="false"/>
+        <property key="tracecontrol.collectioninterval" value="1"/>
+        <property key="tracecontrol.collectionunits" value="1"/>
+        <property key="tracecontrol.disablemacros" value="false"/>
+        <property key="tracecontrol.functionprofile.summary" value="false"/>
+        <property key="tracecontrol.include.timestamp" value="false"/>
+        <property key="tracecontrol.medium" value="0"/>
+        <property key="tracecontrol.portselect" value="0"/>
+        <property key="tracecontrol.select" value="0"/>
+        <property key="tracecontrol.spiselect" value="0"/>
+        <property key="tracecontrol.stallontracebufferfull" value="false"/>
+        <property key="tracecontrol.timerpriority" value="3"/>
+        <property key="tracecontrol.timerselect" value="0"/>
+        <property key="tracecontrol.tracebufmax" value="546000"/>
+        <property key="tracecontrol.tracefile"
+                  value="D:\ButtonPad.X\debug\default\defmplabxtrace.log"/>
+        <property key="tracecontrol.tracefilemax" value="10000000"/>
         <property key="voltagevalue" value="3.25"/>
       </RealICEPlatformTool>
     </conf>

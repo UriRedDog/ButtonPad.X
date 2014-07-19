@@ -97,7 +97,7 @@ void InitPWM()
 
 
   pwm1.Set(&pwm1, OCCON2, 0x8C); // sync with timer2
-  pwm1.Set(&pwm1, OCR, 10); // on time
+  pwm1.Set(&pwm1, OCR, 0x100); // on time
   pwm1.Set(&pwm1, OCRS, 0x1000); // off time
   pwm1.Set(&pwm1, OCCON1, 0x1C05); // timer2, dual compare single shot
   pwm1.Set(&pwm1, OCISR, 1);
@@ -136,7 +136,7 @@ void InitTimers()
 
   // 1 msecond
   Timer2.Set(&Timer2, TCON, 0x10);
-  Timer2.Set(&Timer2, TPERIOD, 0x800);
+  Timer2.Set(&Timer2, TPERIOD, 0x100);
 
   // TODO add timer 3
 }
@@ -156,6 +156,7 @@ void Execute()
   Timer1.Set(&Timer1, TISR, 1);
   Timer2.Execute(&Timer2, TSTART);
   Timer2.Set(&Timer2, TISR, 1);
+  TestLED();
   while (1)
   {
     // main loop

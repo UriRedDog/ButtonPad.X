@@ -117,6 +117,7 @@ Pin_t PowerPin = {BIT(4), &TRISA, &PORTA, &LATA, &ODCA, SetMode, Set, Get};
 
 // the Cathodes need to be mappable pins and we will map an output compare PWM to each
 // the pins do not need an object, we will let the hardware control these
+// but we include them here so we know which pins are used
 //Pin_t Cathode1 = {BIT(0), &LATC, SetMode, Set, Get};
 //Pin_t Cathode2 = {BIT(1), &LATC, SetMode, Set, Get};
 //Pin_t Cathode3 = {BIT(2), &LATC, SetMode, Set, Get};

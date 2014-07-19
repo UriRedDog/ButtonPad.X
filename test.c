@@ -74,6 +74,8 @@ void TestLED()
   int loopcount = 5;
   int i;
   pLED_t pLed;
+
+#ifdef OLD_WAY
   while (loopcount--)
   {
     pLed = LedArray[0];
@@ -92,6 +94,21 @@ void TestLED()
       __delay32(5000);
     }
   }
+#endif
+  Red1.Set(&Red1, LED_ON);
+  Red2.Set(&Red2, LED_ON);
+  Red3.Set(&Red3, LED_ON);
+  Red4.Set(&Red4, LED_ON);
+
+  Green1.Set(&Green1, LED_ON);
+  Green2.Set(&Green2, LED_ON);
+  Green3.Set(&Green3, LED_ON);
+  Green4.Set(&Green4, LED_ON);
+
+  Blue1.Set(&Blue1, LED_ON);
+  Blue2.Set(&Blue2, LED_ON);
+  Blue3.Set(&Blue3, LED_ON);
+  Blue4.Set(&Blue4, LED_ON);
 }
 
 
