@@ -49,25 +49,7 @@
 #include "Timer.h"
 #include "test.h"
 
-//#ifdef UNIT_TEST
 
-// create an array of the LEDs for test purposes
-static pLED_t LedArray[12] ={
-  &Red1,
-  &Red2,
-  &Red3,
-  &Red4,
-
-  &Green1,
-  &Green2,
-  &Green3,
-  &Green4,
-
-  &Blue1,
-  &Blue2,
-  &Blue3,
-  &Blue4
-};
 
 void TestLED()
 {
@@ -95,20 +77,20 @@ void TestLED()
     }
   }
 #endif
-  Red1.Set(&Red1, LED_ON);
-  Red2.Set(&Red2, LED_ON);
-  Red3.Set(&Red3, LED_ON);
-  Red4.Set(&Red4, LED_ON);
+  Red1C1.Set(&Red1C1, LED_ON);
+  Red2C1.Set(&Red2C1, LED_ON);
+  Red3C1.Set(&Red3C1, LED_ON);
+  Red4C1.Set(&Red4C1, LED_ON);
 
-  Green1.Set(&Green1, LED_ON);
-  Green2.Set(&Green2, LED_ON);
-  Green3.Set(&Green3, LED_ON);
-  Green4.Set(&Green4, LED_ON);
+  Green1C1.Set(&Green1C1, LED_ON);
+  Green2C1.Set(&Green2C1, LED_ON);
+  Green3C1.Set(&Green3C1, LED_ON);
+  Green4C1.Set(&Green4C1, LED_ON);
 
-  Blue1.Set(&Blue1, LED_ON);
-  Blue2.Set(&Blue2, LED_ON);
-  Blue3.Set(&Blue3, LED_ON);
-  Blue4.Set(&Blue4, LED_ON);
+  Blue1C1.Set(&Blue1C1, LED_ON);
+  Blue2C1.Set(&Blue2C1, LED_ON);
+  Blue3C1.Set(&Blue3C1, LED_ON);
+  Blue4C1.Set(&Blue4C1, LED_ON);
 }
 
 

@@ -60,11 +60,20 @@ void InitSPI()
   PPSInput(PPS_SS1IN, PPS_RP20);
   PPSInput(PPS_SCK1IN, PPS_RP21);
   PPSInput(PPS_SDI1, PPS_RP22);
-  PPSOutput(PPS_RP22, PPS_SDO1);
+  PPSOutput(PPS_RP23, PPS_SDO1);
 }
 
-// we need to set RP16 - RP19 to be PWM outputs
+void InitCathodes()
+{
+  Cathode1.Set(&Cathode1,PIN_LOW);
+  Cathode2.Set(&Cathode2,PIN_LOW);
+  Cathode3.Set(&Cathode3,PIN_LOW);
+  Cathode4.Set(&Cathode4,PIN_LOW);
+}
 
+
+#if 0
+// we need to set RP16 - RP19 to be PWM outputs
 void InitPWMPins()
 {
   PPSOutput(PPS_RP16, PPS_OC1);
@@ -72,6 +81,7 @@ void InitPWMPins()
   PPSOutput(PPS_RP18, PPS_OC3);
   PPSOutput(PPS_RP19, PPS_OC4);
 }
+#endif
 
 /*
  * The goal is to have only one column of LED active at one time by providing
@@ -81,8 +91,7 @@ void InitPWMPins()
  *
  * all pwm will sync off timer 2 and we want center aligned
  */
-#define PWM_PERIOD 1000
-
+#if 0
 void InitPWM()
 {
   // turn all off
@@ -120,6 +129,7 @@ void InitPWM()
   pwm4.Set(&pwm4, OCCON1, 0x1c05); // timer2, dual compare single shot
   pwm4.Set(&pwm4, OCISR, 1);
 }
+#endif
 
 // timer 1 is the switch bebouncer and sampling
 // timer 2 is used as the LED PWM
@@ -127,18 +137,19 @@ void InitPWM()
 
 void InitTimers()
 {
-  // 2 mseconds
+
   Timer1.Set(&Timer1, TCON, 0x10); // 1:8 prescaller
   Timer1.Set(&Timer1, TPERIOD, 0x1000);
 
-  // test timer 2
-  TRISAbits.TRISA0 = 0;
+  // test timer
+  TRISCbits.TRISC9 = 0;
 
-  // 1 msecond
+  // period will have to be adjusted for pleasing user experience
   Timer2.Set(&Timer2, TCON, 0x10);
-  Timer2.Set(&Timer2, TPERIOD, 0x100);
+  Timer2.Set(&Timer2, TPERIOD, 0x1000);
 
-  // TODO add timer 3
+  Timer3.Set(&Timer3, TCON, 0x10);
+  Timer3.Set(&Timer3, TPERIOD, 0x3F0);
 }
 
 void Initialize()
@@ -146,7 +157,7 @@ void Initialize()
   InitLeds();
   InitSwitches();
   InitTimers();
-  InitPWM();
+  //InitPWM();
   InitSPI();
 }
 
@@ -156,6 +167,7 @@ void Execute()
   Timer1.Set(&Timer1, TISR, 1);
   Timer2.Execute(&Timer2, TSTART);
   Timer2.Set(&Timer2, TISR, 1);
+  Timer3.Set(&Timer3, TISR, 1);
   TestLED();
   while (1)
   {
@@ -164,6 +176,8 @@ void Execute()
 }
 
 unsigned int LastRCON __attribute__ ((persistent));
+unsigned int nextColumn;
+unsigned int nextRow;
 
 /*
  * 
@@ -174,8 +188,10 @@ int main()
   RCON = 0;
   AD1PCFGL = 0xFFFF; /*Ensure AN pins are digital */
 
-  InitPWMPins();
+  //InitPWMPins();
 
+  nextColumn = 0;
+  nextRow = 0;
   // Disable Watch Dog Timer
   RCONbits.SWDTEN = 0;
 
@@ -205,3 +221,77 @@ int main()
   return (EXIT_SUCCESS);
 }
 
+
+
+void NextLedColumn(void const * instance)
+{
+  switch(nextColumn)
+  {
+    case 0:
+      Cathode4.Set(&Cathode4,PIN_LOW);
+      Cathode1.Set(&Cathode1,PIN_HIGH);
+      nextColumn++;
+    break;
+    case 1:
+      Cathode1.Set(&Cathode1,PIN_LOW);
+      Cathode2.Set(&Cathode2,PIN_HIGH);
+      nextColumn++;
+      break;
+    case 2:
+      Cathode2.Set(&Cathode2,PIN_LOW);
+      Cathode3.Set(&Cathode3,PIN_HIGH);
+      nextColumn++;
+      break;
+    case 3:
+      Cathode3.Set(&Cathode3,PIN_LOW);
+      Cathode4.Set(&Cathode4,PIN_HIGH);
+      nextColumn++;
+      break;
+    default:
+      InitCathodes();
+      nextColumn = 0;
+      break;
+  }
+}
+
+void NextLedRow(void const * instance)
+{
+  pLED_t * pRow;
+
+  switch(nextColumn)
+  {
+    case 0: pRow = LedColum1; break;
+    case 1: pRow = LedColum2; break;
+    case 2: pRow = LedColum3; break;
+    case 3: pRow = LedColum4; break;
+    default: pRow = LedColum1; break;
+  }
+
+  switch(nextRow)
+  {
+    case 0:
+      nextRow++;
+      break;
+    case 1:
+      pRow += 3;
+      nextRow++;
+      break;
+    case 2:
+      pRow += 6;
+      nextRow++;
+      break;
+    case 3:
+      pRow += 9;
+      nextRow++;
+      break;
+    default :
+      nextRow = 0;
+      break;
+  }
+
+  (*pRow)->Output(*pRow);
+  pRow++;
+  (*pRow)->Output(*pRow);
+  pRow++;
+  (*pRow)->Output(*pRow);
+}

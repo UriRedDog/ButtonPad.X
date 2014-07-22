@@ -37,20 +37,25 @@
 
 // forward reference
 void ShutDown(void const * instance);
+extern void NextLedColumn(void const * instance);
+extern void NextLedRow(void const * instance);
 
 // these can be in RAM or const FLASH.  If in FLASH, then it is compile time only
-// one could add an API to allow dynamic insertion/remove of callbacks
+// If in RAM, then one could add an API to allow dynamic insertion/remove of callbacks
 CallBackList_t mListTimer1[2] = {
 {SampleSwitches, NULL},
 {NULL,NULL}
 };
 
-CallBackList_t mListTimer3[2] = {
-{ShutDown,NULL},
+CallBackList_t mListTimer2[1] = {
+{NextLedColumn, NULL},
 {NULL,NULL}
 };
 
-CallBackList_t mListTimer2[1] = {{NULL,NULL}};
+CallBackList_t mListTimer3[2] = {
+{NextLedRow, NULL},
+{NULL,NULL}
+};
 
 // this is probably not a runtime operation, so we can do a little more processing
 
@@ -163,7 +168,8 @@ static void Execute(pTimer_t This, TimerExecute_t timerexe)
 void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
 {
   CallBackList_t *list = mListTimer1;
-
+  // this is test code to verify timer period
+  LATCbits.LATC9 ^= 1;
   while (list != NULL && list->CallBack != NULL)
   {
     list->CallBack(list->instance);
@@ -176,8 +182,6 @@ void __attribute__((__interrupt__, no_auto_psv)) _T2Interrupt(void)
 {
   CallBackList_t *list = mListTimer2;
 
-
-//  LATAbits.LATA0 ^= 1;
   while (list != NULL && list->CallBack != NULL)
   {
     list->CallBack(list->instance);

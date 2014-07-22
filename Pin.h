@@ -38,9 +38,9 @@ struct _PIN {
 
 // pins for LEDs
 extern Pin_t Cathode1;
-extern Pin_t Cathode1;
-extern Pin_t Cathode1;
-extern Pin_t Cathode1;
+extern Pin_t Cathode2;
+extern Pin_t Cathode3;
+extern Pin_t Cathode4;
 
 extern Pin_t AnodeRed1;
 extern Pin_t AnodeGreen1;

@@ -101,7 +101,7 @@ Pin_t AnodeBlue4 =   {BIT(4), &TRISB, &PORTB, &LATB, &ODCB, SetMode, Set, Get};
 
 // pin B0 and B1 are for ICE
 
-// these are non-mappable pins
+// these are non-mappable pins for switches
 Pin_t Row1 = {BIT(0), &TRISA, &PORTA, &LATA, &ODCA, SetMode, Set, Get};
 Pin_t Row2 = {BIT(1), &TRISA, &PORTA, &LATA, &ODCA, SetMode, Set, Get};
 Pin_t Row3 = {BIT(2), &TRISA, &PORTA, &LATA, &ODCA, SetMode, Set, Get};
@@ -115,10 +115,12 @@ Pin_t Col4 = {BIT(10),&TRISA, &PORTA, &LATA, &ODCA, SetMode, Set, Get};
 
 Pin_t PowerPin = {BIT(4), &TRISA, &PORTA, &LATA, &ODCA, SetMode, Set, Get};
 
-// the Cathodes need to be mappable pins and we will map an output compare PWM to each
-// the pins do not need an object, we will let the hardware control these
-// but we include them here so we know which pins are used
-//Pin_t Cathode1 = {BIT(0), &LATC, SetMode, Set, Get};
-//Pin_t Cathode2 = {BIT(1), &LATC, SetMode, Set, Get};
-//Pin_t Cathode3 = {BIT(2), &LATC, SetMode, Set, Get};
-//Pin_t Cathode4 = {BIT(3), &LATC, SetMode, Set, Get};
+// If we wanted to use PWM, then the Cathodes need to be mappable pins and we
+// will map an output compare PWM to each pin.
+// but that does not work to well, a simple timer callback will select each
+// common cathode
+
+Pin_t Cathode1 = {BIT(0), &TRISC, &PORTC, &LATC, &ODCC, SetMode, Set, Get};
+Pin_t Cathode2 = {BIT(1), &TRISC, &PORTC, &LATC, &ODCC, SetMode, Set, Get};
+Pin_t Cathode3 = {BIT(2), &TRISC, &PORTC, &LATC, &ODCC, SetMode, Set, Get};
+Pin_t Cathode4 = {BIT(3), &TRISC, &PORTC, &LATC, &ODCC, SetMode, Set, Get};
