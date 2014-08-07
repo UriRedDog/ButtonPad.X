@@ -21,12 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * power system is a switch which turns on a FET or enables SHDWN on a LDO
- * to sustatin power.
- * CPU then sets a bit which drives another FET to keep power enabled.
- * after some period of inactivity, the program will drive the pin low which will
- * remove bias or cause SHDWN to go low, or it could place the CPU into low power
- * the only power draw will be the power FET or LDO leakage current or sleep current
+ 
 */
 
 #include "p24fxxxx.h"
@@ -36,11 +31,29 @@
 LEDState_t SavedStateArray[48];
 
 // set just sets the saved state
-static void Set(pLED_t This, LEDState_t newState)
+static void SetState(pLED_t This, LEDState_t newState)
 {
   *This->state = newState;
 }
 
+// this is used to override the the output while maintaining the state
+static void Set(pLED_t This, LEDState_t newState)
+{
+  pPin_t anode = This->anode;
+
+  switch (newState)
+  {
+    case LED_OFF:
+      anode->Set(anode, PIN_LOW);
+      break;
+
+    case LED_ON:
+      anode->Set(anode, PIN_HIGH);
+      break;
+  }
+}
+
+// this places the LED into the state state
 static void Output(pLED_t This)
 {
   pPin_t anode = This->anode;
@@ -58,67 +71,67 @@ static void Output(pLED_t This)
 }
 
 
-LED_t Red1C1 = {&SavedStateArray[0], &AnodeRed1, Set, Output};
-LED_t Red1C2 = {&SavedStateArray[1], &AnodeRed1, Set, Output};
-LED_t Red1C3 = {&SavedStateArray[2], &AnodeRed1, Set, Output};
-LED_t Red1C4 = {&SavedStateArray[3], &AnodeRed1, Set, Output};
+LED_t Red1C1 = {&SavedStateArray[0], &AnodeRed1, Set, SetState, Output};
+LED_t Red1C2 = {&SavedStateArray[1], &AnodeRed1, Set, SetState, Output};
+LED_t Red1C3 = {&SavedStateArray[2], &AnodeRed1, Set, SetState, Output};
+LED_t Red1C4 = {&SavedStateArray[3], &AnodeRed1, Set, SetState, Output};
 
-LED_t Green1C1 = {&SavedStateArray[4], &AnodeGreen1, Set, Output};
-LED_t Green1C2 = {&SavedStateArray[5], &AnodeGreen1, Set, Output};
-LED_t Green1C3 = {&SavedStateArray[6], &AnodeGreen1, Set, Output};
-LED_t Green1C4 = {&SavedStateArray[7], &AnodeGreen1, Set, Output};
+LED_t Green1C1 = {&SavedStateArray[4], &AnodeGreen1, Set, SetState, Output};
+LED_t Green1C2 = {&SavedStateArray[5], &AnodeGreen1, Set, SetState, Output};
+LED_t Green1C3 = {&SavedStateArray[6], &AnodeGreen1, Set, SetState, Output};
+LED_t Green1C4 = {&SavedStateArray[7], &AnodeGreen1, Set, SetState, Output};
 
-LED_t Blue1C1 = {&SavedStateArray[8], &AnodeBlue1, Set, Output};
-LED_t Blue1C2 = {&SavedStateArray[9], &AnodeBlue1, Set, Output};
-LED_t Blue1C3 = {&SavedStateArray[10], &AnodeBlue1, Set, Output};
-LED_t Blue1C4 = {&SavedStateArray[11], &AnodeBlue1, Set, Output};
+LED_t Blue1C1 = {&SavedStateArray[8], &AnodeBlue1, Set, SetState, Output};
+LED_t Blue1C2 = {&SavedStateArray[9], &AnodeBlue1, Set, SetState, Output};
+LED_t Blue1C3 = {&SavedStateArray[10], &AnodeBlue1, Set, SetState, Output};
+LED_t Blue1C4 = {&SavedStateArray[11], &AnodeBlue1, Set, SetState, Output};
 
-LED_t Red2C1 = {&SavedStateArray[12], &AnodeRed2, Set, Output};
-LED_t Red2C2 = {&SavedStateArray[13], &AnodeRed2, Set, Output};
-LED_t Red2C3 = {&SavedStateArray[14], &AnodeRed2, Set, Output};
-LED_t Red2C4 = {&SavedStateArray[15], &AnodeRed2, Set, Output};
+LED_t Red2C1 = {&SavedStateArray[12], &AnodeRed2, Set, SetState, Output};
+LED_t Red2C2 = {&SavedStateArray[13], &AnodeRed2, Set, SetState, Output};
+LED_t Red2C3 = {&SavedStateArray[14], &AnodeRed2, Set, SetState, Output};
+LED_t Red2C4 = {&SavedStateArray[15], &AnodeRed2, Set, SetState, Output};
 
-LED_t Green2C1 = {&SavedStateArray[16], &AnodeGreen2, Set, Output};
-LED_t Green2C2 = {&SavedStateArray[17], &AnodeGreen2, Set, Output};
-LED_t Green2C3 = {&SavedStateArray[18], &AnodeGreen2, Set, Output};
-LED_t Green2C4 = {&SavedStateArray[19], &AnodeGreen2, Set, Output};
+LED_t Green2C1 = {&SavedStateArray[16], &AnodeGreen2, Set, SetState, Output};
+LED_t Green2C2 = {&SavedStateArray[17], &AnodeGreen2, Set, SetState, Output};
+LED_t Green2C3 = {&SavedStateArray[18], &AnodeGreen2, Set, SetState, Output};
+LED_t Green2C4 = {&SavedStateArray[19], &AnodeGreen2, Set, SetState, Output};
 
-LED_t Blue2C1 = {&SavedStateArray[20], &AnodeBlue2, Set, Output};
-LED_t Blue2C2 = {&SavedStateArray[21], &AnodeBlue2, Set, Output};
-LED_t Blue2C3 = {&SavedStateArray[22], &AnodeBlue2, Set, Output};
-LED_t Blue2C4 = {&SavedStateArray[23], &AnodeBlue2, Set, Output};
+LED_t Blue2C1 = {&SavedStateArray[20], &AnodeBlue2, Set, SetState, Output};
+LED_t Blue2C2 = {&SavedStateArray[21], &AnodeBlue2, Set, SetState, Output};
+LED_t Blue2C3 = {&SavedStateArray[22], &AnodeBlue2, Set, SetState, Output};
+LED_t Blue2C4 = {&SavedStateArray[23], &AnodeBlue2, Set, SetState, Output};
 
-LED_t Red3C1 = {&SavedStateArray[24], &AnodeRed3, Set, Output};
-LED_t Red3C2 = {&SavedStateArray[25], &AnodeRed3, Set, Output};
-LED_t Red3C3 = {&SavedStateArray[26], &AnodeRed3, Set, Output};
-LED_t Red3C4 = {&SavedStateArray[27], &AnodeRed3, Set, Output};
+LED_t Red3C1 = {&SavedStateArray[24], &AnodeRed3, Set, SetState, Output};
+LED_t Red3C2 = {&SavedStateArray[25], &AnodeRed3, Set, SetState, Output};
+LED_t Red3C3 = {&SavedStateArray[26], &AnodeRed3, Set, SetState, Output};
+LED_t Red3C4 = {&SavedStateArray[27], &AnodeRed3, Set, SetState, Output};
 
-LED_t Green3C1 = {&SavedStateArray[28], &AnodeGreen3, Set, Output};
-LED_t Green3C2 = {&SavedStateArray[29], &AnodeGreen3, Set, Output};
-LED_t Green3C3 = {&SavedStateArray[30], &AnodeGreen3, Set, Output};
-LED_t Green3C4 = {&SavedStateArray[31], &AnodeGreen3, Set, Output};
+LED_t Green3C1 = {&SavedStateArray[28], &AnodeGreen3, Set, SetState, Output};
+LED_t Green3C2 = {&SavedStateArray[29], &AnodeGreen3, Set, SetState, Output};
+LED_t Green3C3 = {&SavedStateArray[30], &AnodeGreen3, Set, SetState, Output};
+LED_t Green3C4 = {&SavedStateArray[31], &AnodeGreen3, Set, SetState, Output};
 
-LED_t Blue3C1 = {&SavedStateArray[32], &AnodeBlue3, Set, Output};
-LED_t Blue3C2 = {&SavedStateArray[33], &AnodeBlue3, Set, Output};
-LED_t Blue3C3 = {&SavedStateArray[34], &AnodeBlue3, Set, Output};
-LED_t Blue3C4 = {&SavedStateArray[35], &AnodeBlue3, Set, Output};
+LED_t Blue3C1 = {&SavedStateArray[32], &AnodeBlue3, Set, SetState, Output};
+LED_t Blue3C2 = {&SavedStateArray[33], &AnodeBlue3, Set, SetState, Output};
+LED_t Blue3C3 = {&SavedStateArray[34], &AnodeBlue3, Set, SetState, Output};
+LED_t Blue3C4 = {&SavedStateArray[35], &AnodeBlue3, Set, SetState, Output};
 
-LED_t Red4C1 = {&SavedStateArray[36], &AnodeRed4, Set, Output};
-LED_t Red4C2 = {&SavedStateArray[37], &AnodeRed4, Set, Output};
-LED_t Red4C3 = {&SavedStateArray[38], &AnodeRed4, Set, Output};
-LED_t Red4C4 = {&SavedStateArray[39], &AnodeRed4, Set, Output};
+LED_t Red4C1 = {&SavedStateArray[36], &AnodeRed4, Set, SetState, Output};
+LED_t Red4C2 = {&SavedStateArray[37], &AnodeRed4, Set, SetState, Output};
+LED_t Red4C3 = {&SavedStateArray[38], &AnodeRed4, Set, SetState, Output};
+LED_t Red4C4 = {&SavedStateArray[39], &AnodeRed4, Set, SetState, Output};
 
-LED_t Green4C1 = {&SavedStateArray[40], &AnodeGreen4, Set, Output};
-LED_t Green4C2 = {&SavedStateArray[41], &AnodeGreen4, Set, Output};
-LED_t Green4C3 = {&SavedStateArray[42], &AnodeGreen4, Set, Output};
-LED_t Green4C4 = {&SavedStateArray[43], &AnodeGreen4, Set, Output};
+LED_t Green4C1 = {&SavedStateArray[40], &AnodeGreen4, Set, SetState, Output};
+LED_t Green4C2 = {&SavedStateArray[41], &AnodeGreen4, Set, SetState, Output};
+LED_t Green4C3 = {&SavedStateArray[42], &AnodeGreen4, Set, SetState, Output};
+LED_t Green4C4 = {&SavedStateArray[43], &AnodeGreen4, Set, SetState, Output};
 
-LED_t Blue4C1 = {&SavedStateArray[44], &AnodeBlue4, Set, Output};
-LED_t Blue4C2 = {&SavedStateArray[45], &AnodeBlue4, Set, Output};
-LED_t Blue4C3 = {&SavedStateArray[46], &AnodeBlue4, Set, Output};
-LED_t Blue4C4 = {&SavedStateArray[47], &AnodeBlue4, Set, Output};
+LED_t Blue4C1 = {&SavedStateArray[44], &AnodeBlue4, Set, SetState, Output};
+LED_t Blue4C2 = {&SavedStateArray[45], &AnodeBlue4, Set, SetState, Output};
+LED_t Blue4C3 = {&SavedStateArray[46], &AnodeBlue4, Set, SetState, Output};
+LED_t Blue4C4 = {&SavedStateArray[47], &AnodeBlue4, Set, SetState, Output};
 
-pLED_t LedColum1[12] =
+pLED_t LedColumn1[12] =
 {
   &Red1C1,
   &Green1C1,
@@ -134,7 +147,7 @@ pLED_t LedColum1[12] =
   &Blue4C1,
 };
 
-pLED_t LedColum2[12] =
+pLED_t LedColumn2[12] =
 {
   &Red1C2,
   &Green1C2,
@@ -150,7 +163,7 @@ pLED_t LedColum2[12] =
   &Blue4C2,
 };
 
-pLED_t LedColum3[12] =
+pLED_t LedColumn3[12] =
 {
   &Red1C3,
   &Green1C3,
@@ -166,7 +179,7 @@ pLED_t LedColum3[12] =
   &Blue4C3,
 };
 
-pLED_t LedColum4[12] =
+pLED_t LedColumn4[12] =
 {
   &Red1C4,
   &Green1C4,

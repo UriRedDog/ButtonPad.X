@@ -53,30 +53,6 @@
 
 void TestLED()
 {
-  int loopcount = 5;
-  int i;
-  pLED_t pLed;
-
-#ifdef OLD_WAY
-  while (loopcount--)
-  {
-    pLed = LedArray[0];
-    for (i = 0; i < 12; i++)
-    {
-      pLed->Set(pLed, LED_ON);
-      pLed++;
-      __delay32(5000);
-    }
-
-    pLed = LedArray[0];
-    for (i = 0; i < 12; i++)
-    {
-      pLed->Set(pLed, LED_OFF);
-      pLed++;
-      __delay32(5000);
-    }
-  }
-#endif
   Red1C1.Set(&Red1C1, LED_ON);
   Red2C1.Set(&Red2C1, LED_ON);
   Red3C1.Set(&Red3C1, LED_ON);

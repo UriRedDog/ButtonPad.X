@@ -18,6 +18,7 @@ typedef struct _LED const LED_t;
 typedef LED_t const * pLED_t;
 typedef enum _LEDSTATE { LED_ON = 0, LED_OFF } LEDState_t;
 typedef void (*L_Set)(pLED_t This, LEDState_t newState);
+typedef void (*L_SetState)(pLED_t This, LEDState_t newState);
 typedef void (*L_Output)(pLED_t This);
 
 struct _LED
@@ -25,6 +26,7 @@ struct _LED
     LEDState_t * state;
     pPin_t anode;
     L_Set Set;
+    L_SetState SetState;
     L_Output Output;
 };
 
@@ -91,10 +93,10 @@ extern LED_t Green4C4;
 
 extern void InitLeds();
 
-extern pLED_t LedColum1[12];
-extern pLED_t LedColum2[12];
-extern pLED_t LedColum3[12];
-extern pLED_t LedColum4[12];
+extern pLED_t LedColumn1[12];
+extern pLED_t LedColumn2[12];
+extern pLED_t LedColumn3[12];
+extern pLED_t LedColumn4[12];
 
 #ifdef	__cplusplus
 }

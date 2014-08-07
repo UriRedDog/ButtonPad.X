@@ -22,6 +22,8 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
+ *
+ * See the README for details.
  */
 
 #include <xc.h>
@@ -132,21 +134,21 @@ void InitPWM()
 #endif
 
 // timer 1 is the switch bebouncer and sampling
-// timer 2 is used as the LED PWM
-// timer 3 is used as the inactivity indicator
+// timer 2 is used as to cycle through the columns.
+// timer 3 is used as to cycle through the row of a column
 
 void InitTimers()
 {
 
-  Timer1.Set(&Timer1, TCON, 0x10); // 1:8 prescaller
-  Timer1.Set(&Timer1, TPERIOD, 0x1000);
+  Timer1.Set(&Timer1, TCON, 0x10); // 1:8 prescaller gives .5 us resolution
+  Timer1.Set(&Timer1, TPERIOD, 0xFA0);  // this should give ~ 2ms
 
   // test timer
   TRISCbits.TRISC9 = 0;
 
   // period will have to be adjusted for pleasing user experience
   Timer2.Set(&Timer2, TCON, 0x10);
-  Timer2.Set(&Timer2, TPERIOD, 0x1000);
+  Timer2.Set(&Timer2, TPERIOD, 0x1000);  // each column gets 32ms
 
   Timer3.Set(&Timer3, TCON, 0x10);
   Timer3.Set(&Timer3, TPERIOD, 0x3F0);
@@ -260,11 +262,11 @@ void NextLedRow(void const * instance)
 
   switch(nextColumn)
   {
-    case 0: pRow = LedColum1; break;
-    case 1: pRow = LedColum2; break;
-    case 2: pRow = LedColum3; break;
-    case 3: pRow = LedColum4; break;
-    default: pRow = LedColum1; break;
+    case 0: pRow = LedColumn1; break;
+    case 1: pRow = LedColumn2; break;
+    case 2: pRow = LedColumn3; break;
+    case 3: pRow = LedColumn4; break;
+    default: pRow = LedColumn1; break;
   }
 
   switch(nextRow)

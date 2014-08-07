@@ -26,6 +26,13 @@
  * The InitNewPIN is called to set ADPCFG register since
  * this cannot be accomplished in the compile time constructors.
  *
+ * the power system is a switch which turns on a FET or enables SHDWN on a LDO
+ * to sustatin power.
+ * CPU then sets a bit which drives another FET to keep power enabled.
+ * after some period of inactivity, the program will drive the pin low which will
+ * remove bias or cause SHDWN to go low, or it could place the CPU into low power
+ * the only power draw will be the power FET or LDO leakage current or sleep current
+ *
 */
 
 #include <xc.h>
@@ -33,10 +40,6 @@
 
 #include "Pin.h"
 #include "BitOperations.h"
-
-#define TRIS_OFFSET 2
-#define PORT_OFFSET 1
-#define ODC_OFFSET +1
 
 static PinState_t Get(pPin_t This)
 {
@@ -117,7 +120,7 @@ Pin_t PowerPin = {BIT(4), &TRISA, &PORTA, &LATA, &ODCA, SetMode, Set, Get};
 
 // If we wanted to use PWM, then the Cathodes need to be mappable pins and we
 // will map an output compare PWM to each pin.
-// but that does not work to well, a simple timer callback will select each
+// but that does not work very well, a simple timer callback will select each
 // common cathode
 
 Pin_t Cathode1 = {BIT(0), &TRISC, &PORTC, &LATC, &ODCC, SetMode, Set, Get};

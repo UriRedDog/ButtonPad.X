@@ -4,7 +4,7 @@ ButtonPad.X
 PIC24F to control Sparkfun 4x4 RGB  LED push button pad
 
 This gets difficult.
-The way the device is wired in such a way, that it needs some sort of controller to
+The device is wired in such a way that it needs some sort of controller to
 provide individual LED control.  One cannot just ground LED-GRD[1-4] because setting
 RED4 high would light all the red LED in the row.  Something similar occurs with the columns.
 We also need to limit the total current provided by the controller.  All the LED cannot
@@ -17,4 +17,4 @@ the LED-GRD[] pin is set high and the next LED-GRN[] is selected.  Repeat.
 We will use two timers, one to select a column and one to cycle though each LED in that column.
 
 the controller must also have a 2N7002 FET attached to each LED-GRD.  A simple pin cannot sink
-the amount of current of 12 LED.
+the total amount of current of 12 LED.

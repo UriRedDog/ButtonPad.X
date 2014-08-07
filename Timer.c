@@ -47,7 +47,7 @@ CallBackList_t mListTimer1[2] = {
 {NULL,NULL}
 };
 
-CallBackList_t mListTimer2[1] = {
+CallBackList_t mListTimer2[2] = {
 {NextLedColumn, NULL},
 {NULL,NULL}
 };
